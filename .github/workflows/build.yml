@@ -35,23 +35,3 @@ jobs:
           push: true
           tags: zach27/atut-bootcamp:v1
           labels: ${{ steps.meta.outputs.labels }}
-
-  deploy:
-      runs-on: ubuntu-latest
-      needs: [push-python-app]
-      steps:
-        - name: Deploy app
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.GR_TEST_HOST }}
-            username: ${{ secrets.GR_TEST_USER }}
-            key: ${{ secrets.GR_TEST_SSH_KEY }}
-            port: ${{ secrets.SSH_PORT }}
-            # stop, remove and update step by step
-            script: |
-            
-              cd leisure-experience-app
-              docker-compose -f docker-compose.test.yml down
-              docker load < django.tar
-              docker load < nextjs.tar
-              COMPOSE_HTTP_TIMEOUT=200 docker-compose -f docker-compose.test.yml up -d      
