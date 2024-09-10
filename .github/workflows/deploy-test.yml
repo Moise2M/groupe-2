@@ -43,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Copy docker-compose.yml to the server
-      uses: appleboy/scp-action@v0.1.4
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SCALEWAY_HOST }}
         username: ${{ secrets.SCALEWAY_USER }}
