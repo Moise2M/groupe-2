@@ -42,14 +42,14 @@ jobs:
     needs: [build-image1-backend, build-image2-frontend]
     steps:
     - name: Copy docker-compose.yml to the server
-      uses: appleboy/scp-action@v0.1.1
+      uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ secrets.SCALEWAY_HOST }}
         username: ${{ secrets.SCALEWAY_USER }}
         key: ${{ secrets.SCALEWAY_SSH_KEY }}
         port: 22
         source: "./docker-compose.yml"
-        target: "/moise"
+        target: "./moise"
 
 
     - name: Deploy to server
