@@ -1,20 +1,16 @@
-version: '3.8'
+
 services:
   backend:
-    image: ${CONTAINER_REGISTRY_ENDPOINT}/groupe-2/backend:latest
-    container_name: backend
+    image: ${{CONTAINER_REGISTRY_ENDPOINT}}/backend:latest
     ports:
       - "8001:8001"
     restart: always
 
   frontend:
-    image: ${CONTAINER_REGISTRY_ENDPOINT}/groupe-2/frontend:latest
-    container_name: frontend
+    image: ${{CONTAINER_REGISTRY_ENDPOINT}}/groupe-2/frontend:latest
     ports:
       - "8002:8002"
     depends_on:
       - backend
     restart: always
 
-env_file:
-  - .env
