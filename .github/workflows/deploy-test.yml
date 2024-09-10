@@ -42,6 +42,9 @@ jobs:
     needs: [build-image1-backend, build-image2-frontend]
     steps:
     - uses: actions/checkout@v4
+    - name: Generate .env file
+      run: |
+        echo "CONTAINER_REGISTRY_ENDPOINT=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}" > .env
     - name: Copy docker-compose.yml to the server
       uses: appleboy/scp-action@v0.1.7
       with:
@@ -67,3 +70,8 @@ jobs:
           docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/backend:latest
           docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/frontend:latest
           docker-compose up -d
+
+
+
+
+
