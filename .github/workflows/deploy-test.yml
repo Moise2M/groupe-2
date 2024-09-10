@@ -46,7 +46,7 @@ jobs:
       run: |
         echo "CONTAINER_REGISTRY_ENDPOINT=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}" > .env
     - name: Copy docker-compose.yml to the server
-      uses: appleboy/scp-action@v0.1.7
+      uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ secrets.SCALEWAY_HOST }}
         username: ${{ secrets.SCALEWAY_USER }}
