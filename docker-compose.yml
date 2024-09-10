@@ -1,0 +1,68 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-image1-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to Scaleway Container Registry
+      uses: docker/login-action@v3
+      with:
+        username: nologin
+        password: ${{ secrets.SCALEWAY_API_KEY }}
+        registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+    - name: Build the backend Docker image
+      run: docker build ./backend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/backend:latest
+    - name: Push the backend Docker image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/backend:latest
+
+  build-image2-frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to Scaleway Container Registry
+      uses: docker/login-action@v3
+      with:
+        username: nologin
+        password: ${{ secrets.SCALEWAY_API_KEY }}
+        registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+    - name: Build the frontend Docker image
+      run: docker build ./frontend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/frontend:latest
+    - name: Push the frontend Docker image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/frontend:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-image1-backend, build-image2-frontend]
+    steps:
+    - name: Copy docker-compose.yml to the server
+      uses: appleboy/scp-action@v0.1.1
+      with:
+        host: ${{ secrets.SCALEWAY_HOST }}
+        username: ${{ secrets.SCALEWAY_USER }}
+        key: ${{ secrets.SCALEWAY_SSH_KEY }}
+        port: 22
+        source: "./docker-compose.yml"
+        target: "/moise"
+
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SCALEWAY_HOST }}
+        username: ${{ secrets.SCALEWAY_USER }}
+        key: ${{ secrets.SCALEWAY_SSH_KEY }}
+        port: 22
+        script: |
+          cd /moise
+          docker-compose down || true
+          docker-compose rm -f || true
+          docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/backend:latest
+          docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2/frontend:latest
+          docker-compose up -d

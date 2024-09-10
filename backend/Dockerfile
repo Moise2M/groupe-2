@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exposez le port sur lequel l'application va tourner
-EXPOSE 8000
+EXPOSE 8001
 
 # Commande pour démarrer l'application
-CMD ["uvicorn", "app:app",  "--port", "8000", "--host", "0.0.0.0" ]
+CMD ["uvicorn", "app:app",  "--port", "8001", "--host", "0.0.0.0" ]

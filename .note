@@ -1,0 +1,26 @@
+S3_SECRET_KEY="___"
+S3_ENDPOINT_URL="s3.fr-par.scw.cloud"
+S3_BUCKET_NAME="bv-customers-storage-dev"
+S3_REGION="fr-par"
+
+s3_client = Minio(
+        endpoint=os.getenv("S3_ENDPOINT_URL"),
+        access_key=os.getenv("S3_ACCESS_KEY"),
+        secret_key=os.getenv("S3_SECRET_KEY"),
+        region=os.getenv("S3_REGION"),
+    )
+
+
+
+s3_client.minio.get-object(
+    name:"hduh
+    "
+)
+
+
+    docker swarm
+    voacard app developer autre
+    bentoml
+
+
+    pour le docker compose utiliser le scp du runner et sur le serveur 
