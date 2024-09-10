@@ -50,7 +50,7 @@ jobs:
         key: ${{ secrets.SCALEWAY_SSH_KEY }}
         port: 22
         source: "./docker-compose.yml"
-        target: "/home/moise"
+        target: "/home/moise/"
 
 
     - name: Deploy to server
