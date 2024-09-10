@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image1-backend, build-image2-frontend]
     steps:
+    - uses: actions/checkout@v4
     - name: Copy docker-compose.yml to the server
       uses: appleboy/scp-action@v0.1.4
       with:
